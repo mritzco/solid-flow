@@ -1,6 +1,6 @@
 /* @refresh reload */
 import { For, render } from "solid-js/web";
-import { Router, Routes, Route } from "@solidjs/router";
+import { Router, Route } from "@solidjs/router";
 import { Component } from "solid-js";
 import styles from "./styles.module.css";
 
@@ -36,17 +36,23 @@ const HeaderBar: Component<HeaderProps> = (props: HeaderProps) => {
     );
 };
 
+const App: Component<{ children?: any }> = (props) => {
+    return (
+        <>
+            <HeaderBar routes={routes} />
+            {props.children}
+        </>
+    );
+};
+
 render(
     () => (
-        <Router>
-            <HeaderBar routes={routes} />
-            <Routes>
+        <Router root={App}>
                 <For each={routes}>
                     {(item: { label: string; path: string; component: Component }) => {
                         return <Route path={item.path} component={item.component} />;
                     }}
                 </For>
-            </Routes>
         </Router>
     ),
     document.getElementById("root") as HTMLElement

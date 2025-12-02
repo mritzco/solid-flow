@@ -114,14 +114,14 @@ const Timer: Component = () => {
             targetInput: 0,
         },
         {
-            id: "edge_node-1:0_node-2:0",
+            id: "edge_node-1:0_node-3:0",
             sourceNode: "node-1",
             sourceOutput: 0,
             targetNode: "node-3",
             targetInput: 0,
         },
         {
-            id: "edge_node-1:0_node-2:0",
+            id: "edge_node-2:0_node-4:0",
             sourceNode: "node-2",
             sourceOutput: 0,
             targetNode: "node-4",
@@ -143,6 +143,8 @@ const Timer: Component = () => {
                 onEdgesChange={(newEdges: Edge[]) => {
                     setEdges(newEdges);
                 }}
+                height="100vh"
+                width="100%"
             />
         </div>
     );

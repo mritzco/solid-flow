@@ -117,6 +117,8 @@ const Increment: Component = () => {
                 onEdgesChange={(newEdges: Edge[]) => {
                     setEdges(newEdges);
                 }}
+                height="100vh"
+                width="100%"
             />
         </div>
     );

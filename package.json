@@ -46,7 +46,7 @@
     "dependencies": {
         "dagre": "^0.8.5",
         "graphlib": "^2.1.8",
-        "solid-js": "^1.5.1"
+        "solid-js": "^1.8.0"
     },
     "repository": {
         "type": "git",
