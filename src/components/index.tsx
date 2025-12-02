@@ -73,11 +73,14 @@ const FlowChart: Component<Props> = (props: Props) => {
     sourceOutput: number;
   } | null>(null);
 
+  let prevEdgesRef = props.edges;
   createEffect(() => {
     const nextNodesLength = props.nodes.length;
     const prevNodesLength = nodesData.length;
+    const currentEdgesRef = props.edges;
 
-    if (nextNodesLength !== prevNodesLength) {
+    // Rebuild if node count changed OR edge array reference changed
+    if (nextNodesLength !== prevNodesLength || currentEdgesRef !== prevEdgesRef) {
       const {
         initNodesPositions,
         initNodesData,
@@ -85,7 +88,7 @@ const FlowChart: Component<Props> = (props: Props) => {
         initEdgesNodes,
         initEdgesPositions,
         initEdgesActives,
-      } = convertToLayeredGraph(props.nodes, props.edges);
+      } = convertToLayeredGraph(props.nodes, currentEdgesRef);
 
       setEdgesNodes(initEdgesNodes);
       setEdgesPositions(initEdgesPositions);
@@ -94,6 +97,7 @@ const FlowChart: Component<Props> = (props: Props) => {
       setNodesPositions(initNodesPositions);
       setNodesData(initNodesData);
       setNodesOffsets(initNodesOffsets);
+      prevEdgesRef = currentEdgesRef;
     }
   });
 
