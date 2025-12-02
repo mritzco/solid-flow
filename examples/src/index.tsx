@@ -8,12 +8,14 @@ import Simple from "./Simple";
 import Actions from "./Actions";
 import Increment from "./Increment";
 import Timer from "./Timer";
+import Dynamic from "./Dynamic";
 
 const routes: { label: string; path: string; component: Component }[] = [
     { label: "Simple", path: "simple", component: Simple },
     { label: "Actions", path: "actions", component: Actions },
     { label: "Increment", path: "increment", component: Increment },
     { label: "Timer", path: "timer", component: Timer },
+    { label: "Dynamic", path: "dynamic", component: Dynamic },
 ];
 
 interface HeaderProps {
