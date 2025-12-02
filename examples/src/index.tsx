@@ -1,6 +1,6 @@
 /* @refresh reload */
 import { For, render } from "solid-js/web";
-import { Router, Routes, Route } from "@solidjs/router";
+import { Router, Route } from "@solidjs/router";
 import { Component } from "solid-js";
 import styles from "./styles.module.css";
 
@@ -8,12 +8,14 @@ import Simple from "./Simple";
 import Actions from "./Actions";
 import Increment from "./Increment";
 import Timer from "./Timer";
+import Dynamic from "./Dynamic";
 
 const routes: { label: string; path: string; component: Component }[] = [
     { label: "Simple", path: "simple", component: Simple },
     { label: "Actions", path: "actions", component: Actions },
     { label: "Increment", path: "increment", component: Increment },
     { label: "Timer", path: "timer", component: Timer },
+    { label: "Dynamic", path: "dynamic", component: Dynamic },
 ];
 
 interface HeaderProps {
@@ -36,17 +38,23 @@ const HeaderBar: Component<HeaderProps> = (props: HeaderProps) => {
     );
 };
 
+const App: Component<{ children?: any }> = (props) => {
+    return (
+        <>
+            <HeaderBar routes={routes} />
+            {props.children}
+        </>
+    );
+};
+
 render(
     () => (
-        <Router>
-            <HeaderBar routes={routes} />
-            <Routes>
+        <Router root={App}>
                 <For each={routes}>
                     {(item: { label: string; path: string; component: Component }) => {
                         return <Route path={item.path} component={item.component} />;
                     }}
                 </For>
-            </Routes>
         </Router>
     ),
     document.getElementById("root") as HTMLElement
