@@ -1,5 +1,5 @@
 {
-  "name": "@greedykomodo/solid-flow",
+  "name": "@itzco/solid-flow",
   "version": "0.0.0-development",
   "license": "MIT",
   "source": "src/index.ts",
