@@ -297,17 +297,33 @@ const FlowChart: Component<Props> = (props: Props) => {
         next[edgeId] = true;
         return next;
       });
+      // Register new edge in edgesNodes BEFORE updating nodesData
+      // (nodesData update can trigger re-renders that read edgesNodes)
+      const newEdgeNode = {
+        outNodeId: sourceNodeId,
+        outputIndex: newEdge()?.sourceOutput || 0,
+        inNodeId: targetNodeId,
+        inputIndex: inputIndex,
+      };
+      setEdgesNodes((prev: EdgesNodes) => {
+        const next = { ...prev };
+        next[edgeId] = newEdgeNode;
+        return next;
+      });
       setNodesData(
         produce((nodesData: NodeData[]) => {
           nodesData[newEdge()?.sourceNode || 0].edgesOut.push(edgeId);
           nodesData[nodeIndex].edgesIn.push(edgeId);
         })
       );
+      // Use local snapshot for callback to avoid signal timing issues
+      const allEdgesNodes = { ...edgesNodes(), [edgeId]: newEdgeNode };
       const activeEdgesKeys = Object.keys(edgesActives());
       const activeEdges: EdgeProps[] = [];
       for (let i = 0; i < activeEdgesKeys.length; i++) {
         if (edgesActives()[activeEdgesKeys[i]]) {
-          const edgeInfo = edgesNodes()[activeEdgesKeys[i]];
+          const edgeInfo = allEdgesNodes[activeEdgesKeys[i]];
+          if (!edgeInfo) continue;
           activeEdges.push({
             id: activeEdgesKeys[i],
             sourceNode: edgeInfo.outNodeId,

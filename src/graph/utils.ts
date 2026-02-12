@@ -101,19 +101,30 @@ export function convertToLayeredGraph(
 
   const initEdgesPositions = initialEdges.reduce(
     (acc: EdgesPositions, edge) => {
-      acc[edge.id] = {
-        x0:
-          initialNodes.find((node) => node.id === edge.sourceNode)!.position.x +
-          200,
-        y0:
-          initialNodes.find((node) => node.id === edge.sourceNode)!.position.y -
-          10,
-        x1: initialNodes.find((node) => node.id === edge.targetNode)!.position
-          .x,
-        y1:
-          initialNodes.find((node) => node.id === edge.targetNode)!.position.y -
-          10,
-      };
+      // Find source and target nodes, with fallback to default position
+      const sourceNode = initialNodes.find((node) => node.id === edge.sourceNode);
+      const targetNode = initialNodes.find((node) => node.id === edge.targetNode);
+
+      // Only add edge if both nodes exist
+      if (sourceNode && targetNode) {
+        acc[edge.id] = {
+          x0: sourceNode.position.x + 200,
+          y0: sourceNode.position.y - 10,
+          x1: targetNode.position.x,
+          y1: targetNode.position.y - 10,
+        };
+      } else {
+        // Log warning but don't crash
+        console.warn(
+          `[solid-flow] Edge "${edge.id}" references missing node(s):`,
+          {
+            sourceNode: edge.sourceNode,
+            sourceExists: !!sourceNode,
+            targetNode: edge.targetNode,
+            targetExists: !!targetNode,
+          }
+        );
+      }
       return acc;
     },
     {}
